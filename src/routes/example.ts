@@ -381,6 +381,65 @@ router.put(
     }
 )
 
+//* Delete
+router.delete(
+    "/:id",
+    (req, res) => {
+        /* #swagger.responses[200] = {
+                content: {
+                    "application/json": {
+                        ok: false,
+                        code: 200,
+                        data: {
+                            
+                        }
+                    }
+                }
+            }
+        */
+        /* #swagger.responses[500] = {
+            content: {
+                "application/json": {
+                    ok: false,
+                    code: 500,
+                    data: {
+                        message: "¡Ha ocurrido un problema inesperado!"
+                    } 
+                }
+            }
+          }
+        */
+        fetch(
+            `${EXAMPLE_ENDPOINT}${req.params.id}/`
+        ).then(response => response.json())
+        .then(example => {
+                    const CODE = 200;
+                    const response = new CommonResponseBody(
+                        true,
+                        CODE,
+                        example
+                    )
+                    res.status(CODE).send(response);
+        }).catch(err => {
+            const CODE = 500;
+    
+            const error: ErrorBody = {
+                private: "Error inesperado en llamado fetch en Delete",
+                public: new CommonResponseBody(
+                    false,
+                    CODE,
+                    {
+                        message: "¡Ha ocurrido un problema inesperado!"
+                    }
+                ),
+                errorObject: err
+            }
+            console.log(error.private);
+            console.error(error.errorObject)
+            res.status(CODE).send(error.public);
+        })
+    }
+)
 
 module.exports = router;
 export default router;
