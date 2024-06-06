@@ -350,7 +350,12 @@ router.put(
           }
         */
         fetch(
-            `${EXAMPLE_ENDPOINT}${req.params.id}/`
+            `${EXAMPLE_ENDPOINT}${req.params.id}/`,
+            {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(req.body)
+            }
         ).then(response => response.json())
         .then(example => {
                     const CODE = 200;
@@ -410,7 +415,10 @@ router.delete(
           }
         */
         fetch(
-            `${EXAMPLE_ENDPOINT}${req.params.id}/`
+            `${EXAMPLE_ENDPOINT}${req.params.id}/`,
+            {
+                method: "DELETE"
+            }
         ).then(response => response.json())
         .then(example => {
                     const CODE = 200;
