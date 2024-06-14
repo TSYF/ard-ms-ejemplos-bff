@@ -249,11 +249,11 @@ router.post(
         */
         const example: Example & RequestBody = req.body;
 
-        if (!matches(example, exampleMatcher)) {
+        if (!matches(example, exampleMatcher) || example.image.trim() === "") {
             const CODE = 422;
             
             const error: ErrorBody = {
-                private: "Error inesperado en llamado fetch en Store",
+                private: "La forma del cuerpo no coincide con la forma de Ejemplo",
                 public: new CommonResponseBody(
                     false,
                     CODE,
@@ -414,6 +414,26 @@ router.delete(
             }
           }
         */
+        const example: RequestBody = req.body;
+        if (example.hasOwnProperty("image") && example.image.trim() === "") {
+            const CODE = 422;
+            
+            const error: ErrorBody = {
+                private: "La forma del cuerpo no coincide con la forma de Ejemplo",
+                public: new CommonResponseBody(
+                    false,
+                    CODE,
+                    {
+                        message: "La forma del cuerpo no coincide con la forma de Ejemplo"
+                    }
+                )
+            }
+            console.log(error.private);
+            console.error(error.errorObject)
+            res.status(CODE).send(error.public);
+            return;
+        }
+       
         fetch(
             `${EXAMPLE_ENDPOINT}${req.params.id}/`,
             {
